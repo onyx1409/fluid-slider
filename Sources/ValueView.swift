@@ -10,8 +10,9 @@ import UIKit
 import pop
 
 class ValueView : UIView {
-
-    static let kLayoutMarginInset: CGFloat = 4
+    
+    static let kLayoutMarginInset: CGFloat = -2
+    static let kLayoutOuterBorderWith: CGFloat = 1
     
     // MARK: - Initialization
     
@@ -63,17 +64,17 @@ class ValueView : UIView {
             return textLabel.attributedText
         }
         set {
-			if let newValue = newValue {
-				// apply centered horizontal alignment
-				let string = newValue.mutableCopy() as! NSMutableAttributedString
-				let paragraph = (string.attribute(.paragraphStyle, at: 0, effectiveRange: nil) as? NSParagraphStyle ?? NSParagraphStyle()).mutableCopy() as! NSMutableParagraphStyle
-				paragraph.alignment = .center
-				string.addAttribute(.paragraphStyle, value: paragraph, range: NSMakeRange(0, string.length))
-				textLabel.attributedText = string
-			} else {
-				textLabel.attributedText = nil
-			}
-		}
+            if let newValue = newValue {
+                // apply centered horizontal alignment
+                let string = newValue.mutableCopy() as! NSMutableAttributedString
+                let paragraph = (string.attribute(.paragraphStyle, at: 0, effectiveRange: nil) as? NSParagraphStyle ?? NSParagraphStyle()).mutableCopy() as! NSMutableParagraphStyle
+                paragraph.alignment = .center
+                string.addAttribute(.paragraphStyle, value: paragraph, range: NSMakeRange(0, string.length))
+                textLabel.attributedText = string
+            } else {
+                textLabel.attributedText = nil
+            }
+        }
     }
     
     // MARK: - Laying out Subviews
@@ -83,8 +84,10 @@ class ValueView : UIView {
         
         textLabel.frame = bounds
         
-        outerShapeLayer.path = UIBezierPath(ovalIn: shapeView.bounds).cgPath
-        innerShapeLayer.path = UIBezierPath(ovalIn: shapeView.bounds.insetBy(dx: ValueView.kLayoutMarginInset, dy: ValueView.kLayoutMarginInset)).cgPath
+        //        outerShapeLayer.path = UIBezierPath(ovalIn: shapeView.bounds).cgPath
+        outerShapeLayer.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: bounds.width, height: bounds.height).insetBy(dx: ValueView.kLayoutMarginInset, dy: ValueView.kLayoutMarginInset).insetBy(dx: -ValueView.kLayoutOuterBorderWith, dy: -ValueView.kLayoutOuterBorderWith), cornerRadius: 5).cgPath
+        innerShapeLayer.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: bounds.width, height: bounds.height).insetBy(dx: ValueView.kLayoutMarginInset, dy: ValueView.kLayoutMarginInset), cornerRadius: 5).cgPath
+        //        innerShapeLayer.path = UIBezierPath(ovalIn: shapeView.bounds.insetBy(dx: ValueView.kLayoutMarginInset, dy: ValueView.kLayoutMarginInset)).cgPath
         layer.removeAllAnimations()
     }
     
