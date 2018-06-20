@@ -10,6 +10,7 @@ import UIKit
 import pop
 
 class ValueView : UIView {
+    //asf
     
     static let kLayoutMarginInset: CGFloat = -2
     static let kLayoutOuterBorderWith: CGFloat = 1
